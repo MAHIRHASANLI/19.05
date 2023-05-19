@@ -34,21 +34,22 @@ app.get('/api', (req, res) => {
 ////Get Cars
 app.get('/api/cars', (req, res) => {
     const { brandName, modelName } = req.query;
-    if (!brandName || !modelName) {
+    if (!brandName && !modelName) {
         res.send({
             data: faceCarsData,
             message: 'carsData succes!!'
         })
     }
-    else if(!brandName || !modelName){
-        res.send({
-            message: 'carsData yoxdu!!'
-        })
-    } 
     else  {
-        const filteredData = faceCarsData.filter((x) =>
-            x.brandName.toLowerCase().trim().includes(brandName.toLowerCase().trim() || x.modelName.toLowerCase().trim().includes(modelName.toLowerCase().trim())));
+        if(brandName){
+            const filteredData = faceCarsData.filter((x) =>
+            x.brandName.toLowerCase().trim().includes(brandName.toLowerCase().trim()));
         res.status(200).send(filteredData);
+        }
+      else{
+        const filtered = faceCarsData.filter((x) => x.modelName.toLowerCase().trim().includes(modelName.toLowerCase().trim()));
+        res.status(200).send(filtered);
+      }
     }
 })
 
